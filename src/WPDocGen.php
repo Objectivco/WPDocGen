@@ -35,7 +35,7 @@ if (!class_exists('Dudo1985\WPDocGen\WPDocGen')) {
          *
          * @var string
          */
-        public string $function_to_seek = 'apply_filters|do_action';
+        public string $function_to_seek = 'apply_filters|do_action|cfw_get_action_output';
 
         /**
          * True if shortcodes must be searched
@@ -205,6 +205,14 @@ if (!class_exists('Dudo1985\WPDocGen\WPDocGen')) {
 
             //check if --shortcode or -s was used
             $this->parseShortcode($argv);
+
+            if ( in_array('--filters-only', $argv) ) {
+                $this->function_to_seek = 'apply_filters';
+            }
+
+            if ( in_array('--actions-only', $argv) ) {
+                $this->function_to_seek = 'do_action|cfw_get_action_output';
+            }
 
             //check if the script is called with --exclude, or -e
             $this->excluded_folders = $this->getOptions($argv, '--exclude', '-e');
